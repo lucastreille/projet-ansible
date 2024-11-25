@@ -1,0 +1,69 @@
+# Déploiement Automatisé de GitLab avec Ansible
+
+## Description
+
+Ce projet permet de déployer un serveur GitLab de manière totalement automatisée à l'aide d'Ansible. L'objectif est de fournir une solution clé en main pour déployer un serveur GitLab en utilisant un seul **playbook** Ansible. Le processus inclut la configuration des dépendances, l'installation de GitLab, et la configuration du serveur pour qu'il soit prêt à l'emploi.
+
+## Prérequis
+
+Avant de commencer, vous devez vous assurer que vous avez les éléments suivants :
+
+1. **Machine cible** avec un système Linux (par exemple, Debian/Ubuntu) sur lequel GitLab sera installé.
+2. **Ansible** installé sur la machine locale (celle à partir de laquelle vous exécutez le playbook).
+4. Accès SSH configuré à la machine distante pour permettre à Ansible d'y exécuter des commandes.
+
+---
+
+## Étapes du Déploiement
+
+### 1. Cloner le dépôt
+
+Clonez ce projet depuis votre repository GitHub ou votre dépôt local :
+
+```bash
+git https://github.com/lucastreille/projet-ansible.git
+cd projet-ansible
+```
+
+## 2. Configurer l'inventaire Ansible
+
+L'inventaire **`inventory.yml`** contient les informations de connexion à la machine distante sur laquelle GitLab sera installé. Vous devez le configurer avant d'exécuter le playbook Ansible.
+
+Voici un exemple de configuration de l'inventaire pour une machine distante à l'adresse **192.168.232.131** :
+
+```yaml
+all:
+  hosts:
+    192.168.232.131:  # Remplacez par l'adresse IP de votre machine distante
+      ansible_user: root  # Utilisateur avec les privilèges nécessaires
+```
+
+## 3. Lancer le Playbook
+
+Une fois que vous avez configuré votre fichier d'inventaire **`inventory.yml`** et que vous êtes prêt à déployer GitLab, vous pouvez exécuter le playbook Ansible en utilisant la commande suivante :
+
+### Commande pour exécuter le playbook :
+
+```bash
+ansible-playbook -i inventory.yml site.yml
+```
+
+## 4. Accéder à GitLab après déploiement
+
+Une fois le serveur GitLab déployé avec Ansible, vous pouvez accéder à l'interface web de GitLab pour commencer à l'utiliser.
+
+### Étapes pour accéder à GitLab :
+
+1. Ouvrez un navigateur web et entrez l'adresse IP de votre serveur GitLab dans la barre d'adresse :
+
+```bash
+http://192.168.232.131
+```
+
+2. Connectez-vous avec les identifiants suivants :
+- **Utilisateur** : `root`
+- **Mot de passe** : `SuperSecurePassword123`
+
+Cela vous permettra d'accéder à l'interface d'administration de GitLab et de commencer à configurer votre instance selon vos besoins.
+
+
