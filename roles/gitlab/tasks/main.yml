@@ -1,0 +1,52 @@
+- name: Installer Docker
+  apt:
+    name: docker.io
+    state: present
+    update_cache: yes
+
+- name: Installer Docker Compose
+  apt:
+    name: docker-compose
+    state: present
+
+- name: Créer le répertoire pour le projet GitLab
+  file:
+    path: "/home/{{ ansible_user }}/gitlab"
+    state: directory
+    mode: '0755'
+
+- name: Copier le Dockerfile pour créer l'image GitLab
+  copy:
+    src: ./files/Dockerfile
+    dest: /home/{{ ansible_user }}/gitlab/Dockerfile
+    mode: '0755'
+
+- name: Copier le fichier docker-compose.yml
+  copy:
+    src: ./files/docker-compose.yml
+    dest: /home/{{ ansible_user }}/gitlab/docker-compose.yml
+    mode: '0755'
+
+- name: Copier le fichier de configuration gitlab.rb.j2
+  template:
+    src: gitlab.rb.j2
+    dest: /home/{{ ansible_user }}/gitlab/gitlab.rb
+    mode: '0755'
+
+- name: Afficher la configuration du docker-compose
+  debug:
+    var: compose_config_check.stdout
+
+- name: Vérifier si le service Docker fonctionne
+  service:
+    name: docker
+    state: started
+    enabled: yes
+
+- name: Lancer Docker Compose pour déployer GitLab
+  command: docker-compose -f /home/{{ ansible_user }}/gitlab/docker-compose.yml up -d
+  args:
+    chdir: /home/{{ ansible_user }}/gitlab
+  become: yes
+  register: compose_output
+  ignore_errors: yes

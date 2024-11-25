@@ -1,0 +1,21 @@
+- name: Update apt cache
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600  
+
+- name: Install PostgreSQL and contrib package from default APT repositories
+  apt:
+    name:
+      - postgresql
+      - postgresql-contrib
+    state: present
+    update_cache: yes
+
+- name: Verify PostgreSQL version
+  command: psql --version
+  register: result
+  changed_when: false
+
+- name: Show PostgreSQL version
+  debug:
+    var: result.stdout
