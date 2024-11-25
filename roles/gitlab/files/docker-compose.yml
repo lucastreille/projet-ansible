@@ -4,10 +4,6 @@ services:
   gitlab:
     image: gitlab/gitlab-ce:latest
     container_name: gitlab
-    environment:
-      GITLAB_OMNIBUS_CONFIG: |
-        external_url 'http://192.168.232.130'
-      GITLAB_ROOT_PASSWORD: 'SuperSecurePassword123'
     ports:
       - "80:80"
       - "443:443"
